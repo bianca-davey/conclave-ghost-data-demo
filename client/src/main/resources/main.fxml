@@ -47,24 +47,24 @@
                     </HBox>
                     <!-- Entity selection menu. -->
                     <AnchorPane>
-                        <!-- TODO: entity accordion button colour upon click. -->
+                        <!-- TODO: set uniform colouring to accordion entity title. -->
                         <Accordion layoutX="10.0" layoutY="10.0" prefHeight="140.0" prefWidth="200.0" styleClass="entity-menu">
                             <panes>
-                                <TitledPane animated="false" prefHeight="200.0" prefWidth="200.0" text="ENTITIES">
+                                <TitledPane animated="false" prefHeight="200.0" prefWidth="200.0" text="ENTITIES" styleClass="entity-menu-button">
                                     <content>
-                                        <Pane prefWidth="199.0" styleClass="pane">
+                                        <Pane prefWidth="200.0" styleClass="entity-menu-button">
                                             <children>
-                                                <Button layoutY="1.0" prefWidth="200.0" text="Person" textAlignment="CENTER">
+                                                <Button layoutY="1.0" prefWidth="200.0" text="Person" textAlignment="CENTER" styleClass="entity-menu-button">
                                                     <padding>
                                                         <Insets bottom="5.0" top="5.0" />
                                                     </padding>
                                                 </Button>
-                                                <Button layoutY="36.0" prefWidth="200.0" text="Invoice" textAlignment="CENTER">
+                                                <Button layoutY="36.0" prefWidth="200.0" text="Invoice" textAlignment="CENTER" styleClass="entity-menu-button">
                                                     <padding>
                                                         <Insets bottom="5.0" top="5.0" />
                                                     </padding>
                                                 </Button>
-                                                <Button layoutY="71.0" prefWidth="200.0" text="Claim" textAlignment="CENTER">
+                                                <Button layoutY="71.0" prefWidth="200.0" text="Claim" textAlignment="CENTER" styleClass="entity-menu-button">
                                                     <padding>
                                                         <Insets bottom="5.0" top="5.0" />
                                                     </padding>
@@ -93,13 +93,14 @@
             <!-- Start of centre section. -->
             <center>
                 <BorderPane id="leftPane">
-                    <!-- Top section- title, audit button and user profile information. -->
+                    <!-- Top section- title, audit button, user profile information. -->
                     <top>
                         <GridPane styleClass="header" vgap="5">
                             <!-- Title of Entity currently viewing. -->
                             <HBox alignment="CENTER_LEFT" prefWidth="50.0" styleClass="title-pane" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                 <Text styleClass="entity-title" text="Person" />
-                                <!-- New Trade Button. TODO: Input fields in TableView.-->
+                                <!-- TODO: work in progress- input fields in TableView row. -->
+                                <!-- New Trade Button. -->
                                 <!-- <Button alignment="CENTER" graphicTextGap="5.0" mnemonicParsing="false" onAction="#newTrade" styleClass="generic-button" text="New Trade">
                                     <padding>
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -152,8 +153,6 @@
                         </GridPane>
                     </top>
                     <!-- End of top section. -->
-
-
                     <!-- Start of center section. -->
                     <center>
                         <VBox id="contentPane" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
@@ -162,9 +161,7 @@
                             </padding>
                             <children>
 
-
-                                <!-- Input Row for Entity Table-->
-
+                                <!-- TODO: work in progress- Input Row for Entity Table-->
                                 <VBox prefHeight="20.0" prefWidth="100.0" styleClass="panel" VBox.vgrow="ALWAYS" >
                                     <GridPane styleClass="panel" VBox.vgrow="ALWAYS" >
                                         <children>
@@ -182,7 +179,7 @@
                                         </children>
                                     </GridPane>
                                 </VBox>
-
+                                <!-- Note- work in progress; rough notes/tests. -->
                                 <!-- Input Row for Entity Table-->
                                 <!--
                                 <VBox prefHeight="20.0" prefWidth="100.0" styleClass="panel" VBox.vgrow="ALWAYS" >
@@ -206,11 +203,8 @@
                                     </GridPane>
                                 </VBox>
                                 -->
-
-
-                                <!-- TODO: Create input fields in TableView. -->
                                 <!-- TODO: Dynamic columns based on Entity chosen from Accordion menu. -->
-                                <!-- TODO: TableColumns based on Person entity. -->
+                                <!-- TODO: work in progress, unfinished code. TableColumns based on Person entity. -->
                                 <VBox prefHeight="50.0" prefWidth="100.0" spacing="20.0" styleClass="panel" VBox.vgrow="ALWAYS">
                                     <children>
                                         <TableView fx:id="personTable" editable="true" maxHeight="1.7976931348623157E308" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -273,8 +267,6 @@
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                     </padding>
                                 </VBox>
-
-
 
                                 <!-- Orders Table -->
                                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" styleClass="panel" VBox.vgrow="ALWAYS">

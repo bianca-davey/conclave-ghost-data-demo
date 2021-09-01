@@ -229,6 +229,7 @@ Button:hover {
     -fx-background-color: red, -color-2;
 }
 
+/* Entity accordion menu styling. */
 .entity-menu {
     -fx-background-color: transparent;
     -fx-color: -color-2;
@@ -241,6 +242,17 @@ Button:hover {
     -fx-alignment: center-left;
 }
 
+.entity-menu-button {
+    -fx-background-color: -color-2;
+    -fx-text-fill: white;
+    -fx-background-radius: 0;
+}
+
+.entity-menu-button:hover {
+    -fx-background-color: -color-0;
+}
+
+/* Entity title styling. */
 .entity-title {
     -fx-text-fill: white;
     -fx-font-weight: bold;

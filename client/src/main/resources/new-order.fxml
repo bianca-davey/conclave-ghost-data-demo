@@ -30,7 +30,6 @@
          <VBox prefWidth="100.0" GridPane.vgrow="NEVER">
             <children>
                <Label text="Instrument"/>
-               <!-- TODO: move each textfield id to main.fxml. Then ultimately into a table row.-->
                <TextField fx:id="instrumentField"/>
             </children>
          </VBox>

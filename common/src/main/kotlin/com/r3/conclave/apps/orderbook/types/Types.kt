@@ -15,7 +15,6 @@ import java.util.*
 @Serializable
 enum class BuySell { BUY, SELL }
 
-// TODO- note, here's OrderOrTrade.
 @Serializable
 sealed class OrderOrTrade
 
