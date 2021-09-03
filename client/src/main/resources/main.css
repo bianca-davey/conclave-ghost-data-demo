@@ -58,7 +58,7 @@
 .user-button {
     -fx-text-fill: white;
     -fx-background-color: transparent;
-    -fx-fill: white;
+    -fx-fill: grey;
     -fx-border-color: grey;
     -fx-border-style: solid;
     -fx-border-width: 0;
@@ -74,6 +74,27 @@
 
 .user-button-text {
     -fx-text-fill: white;
+}
+
+.user-exit-button {
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+    -fx-fill: black;
+    -fx-border-color: -color-2;
+    -fx-border-style: solid;
+    -fx-border-width: 0;
+    -fx-font-weight: bold;
+    -fx-border-radius: 30;
+    -fx-padding: 3;
+}
+
+.user-exit-button .label {
+    -fx-text-fill: black;
+    -fx-font-size: 1.2em;
+}
+
+.user-exit-button-text {
+    -fx-text-fill: black;
 }
 
 .top-menu-icon {
@@ -256,4 +277,16 @@ Button:hover {
 .entity-title {
     -fx-text-fill: white;
     -fx-font-weight: bold;
+}
+
+/* Input fields styling. */
+.input-field Text {
+    -fx-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* Drop box styling. */
+.drop-box {
+    -fx-background: white;
 }

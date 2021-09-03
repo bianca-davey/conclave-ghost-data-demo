@@ -26,11 +26,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.cell.TextFieldTableCell?>
-
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+
+<!-- TODO: Input Row and CSV drag. -->
+
 <Scene stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <StackPane fx:id="topStack" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="924.0" prefWidth="1383.0">
         <BorderPane styleClass="parent">
@@ -128,7 +130,7 @@
                                 <children>
                                     <MenuButton id="userButton" fx:id="userButton" alignment="CENTER" mnemonicParsing="false" styleClass="user-button" text="Jane Doe">
                                         <items>
-                                            <MenuItem id="exit" mnemonicParsing="false" text="Quit" />
+                                            <MenuItem id="exit" mnemonicParsing="false" text="Quit" styleClass="user-exit-button" />
                                         </items>
                                     </MenuButton>
                                     <ImageView fx:id="photoView" fitHeight="60.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
@@ -162,6 +164,7 @@
                             <children>
 
                                 <!-- TODO: work in progress- Input Row for Entity Table-->
+                                <!--
                                 <VBox prefHeight="20.0" prefWidth="100.0" styleClass="panel" VBox.vgrow="ALWAYS" >
                                     <GridPane styleClass="panel" VBox.vgrow="ALWAYS" >
                                         <children>
@@ -170,21 +173,41 @@
                                             <TextField fx:id="dOBField" promptText="Enter DOB DD/MM/YYYY" prefHeight="20.0" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
                                             <TextField fx:id="addressField" promptText="Enter address" prefHeight="20.0" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
                                             <TextField fx:id="passportField" promptText="Enter passport" prefHeight="20.0" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+                                            -->
                                             <!--
                                             <Button cancelButton="true" mnemonicParsing="false" onAction="#close" styleClass="generic-button" text="X" GridPane.columnIndex="5" GridPane.rowIndex="0">
                                             </Button>
                                             <Button defaultButton="true" mnemonicParsing="false" onAction="#addEntity" styleClass="generic-button" text="+" GridPane.columnIndex="6" GridPane.rowIndex="0">
                                             </Button>
                                             -->
+                                <!--
                                         </children>
                                     </GridPane>
                                 </VBox>
+                                -->
+
+                                <!-- TODO Sep 2: Input row and CSV drag & drop. -->
                                 <!-- Note- work in progress; rough notes/tests. -->
                                 <!-- Input Row for Entity Table-->
-                                <!--
-                                <VBox prefHeight="20.0" prefWidth="100.0" styleClass="panel" VBox.vgrow="ALWAYS" >
-                                    <GridPane styleClass="panel" VBox.vgrow="ALWAYS" >
+
+                                <VBox prefWidth="100.0" styleClass="panel" >
+                                    <GridPane styleClass="panel" minHeight="50.0" maxHeight="50.0" >
                                         <children>
+                                            <TextField fx:id="firstNameField" promptText="Enter first name" GridPane.columnIndex="0" minHeight="50.0" maxHeight="50.0" styleClass="input-field"/>
+                                            <TextField fx:id="lastNameField" promptText="Enter last name" GridPane.columnIndex="1" minHeight="50.0" maxHeight="50.0"/>
+                                            <TextField fx:id="dOBField" promptText="Enter DOB DD/MM/YYYY" GridPane.columnIndex="2" minHeight="50.0" maxHeight="50.0"/>
+                                            <TextField fx:id="addressField" promptText="Enter address" GridPane.columnIndex="3" minHeight="50.0" maxHeight="50.0"/>
+                                            <TextField fx:id="passportField" promptText="Enter passport" GridPane.columnIndex="4" minHeight="50.0" maxHeight="50.0"/>
+                                            <!--<Button fx:id="addButton" mnemonicParsing="false" text="+" onAction="#ok" styleClass="generic-button" GridPane.columnIndex="5"/>-->
+                                            <Button fx:id="addButton" graphicTextGap="15.0" mnemonicParsing="false" GridPane.columnIndex="5" prefWidth="50.0" styleClass="generic-button" onAction="#ok">
+                                                <graphic>
+                                                    <FontIcon iconColor="WHITE" iconLiteral="fa-plus" iconSize="25" />
+                                                </graphic>
+                                            </Button>
+                                            <HBox minHeight="50.0" maxHeight="50.0" minWidth="50.0" maxWidth="50.0" GridPane.columnIndex="6" styleClass="drop-box">
+                                                <FontIcon iconColor="WHITE" iconLiteral="fa-circle" iconSize="25" />
+                                            </HBox>
+                                            <!--
                                             <TextField fx:id="instrumentField" promptText="Enter instrument" prefHeight="20.0" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                                             <TextField fx:id="priceField" promptText="Enter price" prefHeight="20.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                                             <TextField fx:id="quantityField" promptText="Enter quantity" text="0" prefHeight="20.0" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
@@ -199,15 +222,17 @@
                                             </Button>
                                             <Button defaultButton="true" mnemonicParsing="false" onAction="#ok" styleClass="generic-button" text="PLACE ORDER" GridPane.columnIndex="6" GridPane.rowIndex="0">
                                             </Button>
+                                            -->
                                         </children>
                                     </GridPane>
                                 </VBox>
-                                -->
+
+
                                 <!-- TODO: Dynamic columns based on Entity chosen from Accordion menu. -->
                                 <!-- TODO: work in progress, unfinished code. TableColumns based on Person entity. -->
                                 <VBox prefHeight="50.0" prefWidth="100.0" spacing="20.0" styleClass="panel" VBox.vgrow="ALWAYS">
                                     <children>
-                                        <TableView fx:id="personTable" editable="true" maxHeight="1.7976931348623157E308" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                        <TableView fx:id="ordersTable" editable="true" maxHeight="1.7976931348623157E308" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                             <columns>
                                                 <TableColumn text="ID">
                                                     <cellValueFactory>
@@ -269,6 +294,8 @@
                                 </VBox>
 
                                 <!-- Orders Table -->
+
+                                <!--
                                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" styleClass="panel" VBox.vgrow="ALWAYS">
                                     <children>
                                         <TableView fx:id="ordersTable" editable="true" maxHeight="1.7976931348623157E308" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -289,6 +316,8 @@
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                     </padding>
                                 </VBox>
+                                -->
+
                                 <!-- Title for Matches table. -->
                                 <HBox alignment="CENTER_LEFT" styleClass="title-pane" >
                                     <Text styleClass="entity-title" text="Matches" />

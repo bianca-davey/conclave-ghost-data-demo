@@ -234,7 +234,7 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
     lateinit var ordersTable: TableView<Item<Order>>
     lateinit var matchesTable: TableView<Item<Trade>>
     // TODO: personTable with input row.
-    lateinit var personTable: TableView<Person>
+    //lateinit var personTable: TableView<Person>
     lateinit var userButton: MenuButton
     lateinit var photoView: ImageView
 
@@ -248,7 +248,7 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         matchesTable.items = trades
         ordersTable.items = orders
         // TODO: entity table for person.
-        personTable.items = personEntities
+        //personTable.items = personEntities
 
         // Setting user profile details.
         if (userName.toLowerCase() == "alice")
