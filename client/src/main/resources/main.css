@@ -280,6 +280,7 @@ Button:hover {
 }
 
 /* Input fields styling. */
+/* TODO: smaller font size for input fields prompt text. */
 .input-field Text {
     -fx-fill: white;
     -fx-font-size: 20px;
@@ -287,6 +288,11 @@ Button:hover {
 }
 
 /* Drop box styling. */
+/* TODO: styling- add black spacing between add button and drop box, or transparent background for drop box FontIcon. */
 .drop-box {
-    -fx-background: white;
+    -fx-background: black;
+    -fx-border-width: 10;
+    -fx-border-colour: black;
+    -fx-border-style: solid;
 }
+

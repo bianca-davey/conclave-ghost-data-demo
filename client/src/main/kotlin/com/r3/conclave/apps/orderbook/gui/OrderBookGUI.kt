@@ -13,6 +13,7 @@ import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.collections.FXCollections
 import javafx.concurrent.Task
+import javafx.event.EventHandler
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
 import javafx.scene.Parent
@@ -21,6 +22,11 @@ import javafx.scene.control.*
 import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.input.DragEvent
+import javafx.scene.input.Dragboard
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox
 import javafx.scene.shape.Circle
 import javafx.scene.text.Font
 import javafx.stage.Stage
@@ -32,6 +38,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
+import java.io.File;
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
@@ -243,6 +250,20 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
     // TODO: personTable populated with.
     private val personEntities = FXCollections.observableArrayList<Person>()
 
+    // TODO Sep 3: drag & drop for CSV file.
+    lateinit var dropBox: HBox;
+    /*
+    dropBox.setOnDragOver(EventHandler<DragEvent>){
+        @Override
+        fun handle(DragEvent event){
+            Dragboard dragBoard = event.getDragBoard();
+            if(dragBoard.hasFiles()){
+                event.acceptTransferModes(TransferMode.COPY)
+            }
+        }
+    }
+     */
+
     init {
         userButton.text = userName.capitalize()
         matchesTable.items = trades
@@ -264,7 +285,42 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         //configurePersonTable()
         listenForMatches()
     }
-   // Configures tableviews.
+
+    // TODO Sep 3: CSV drop box.
+    private fun csvDropBox() {
+        dropBox.onDragOver = EventHandler<DragEvent>(){
+            fun handle(event: DragEvent){
+                if(event.gestureSource != dropBox && event.dragboard.hasFiles()){
+                    event.acceptTransferModes(TransferMode.COPY)
+                }
+                event.consume()
+            }
+        }
+        dropBox.onDragDropped = EventHandler<DragEvent>(){
+            fun handle(event: DragEvent){
+                if (event.dragboard.hasFiles()){
+                    // Label example- label1.setText(db.getFiles().toString())
+                    print("Event successful.")
+                }
+                event.consume()
+            }
+        }
+
+    }
+    /*
+        private fun csvDropBox() {
+        dropBox.setOnDragOver(EventHandler<DragEvent>(){
+            @Override
+            handle(DragEvent event){
+            }
+        }
+
+        dropBox.setOnDragDropped(){
+        }
+    }
+     */
+
+    // Configures tableviews.
     private fun <T : OrderOrTrade> setColFromString(column: TableColumn<Item<T>, *>?, body: (Item<T>) -> String) {
         (column as TableColumn<Item<T>, String>).setCellValueFactory {
             Bindings.createStringBinding({ body(it.value) })
@@ -322,7 +378,7 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
     }
 
 
-    // TODO: make one of these functions for person tableview? Yes.
+    // TODO: function for person tableview
     private fun <T : EntityType> List<TableColumn<PersonInstance<T>, *>>.centreColumns() {
         for (column in this) {
             if (column.columns.isNotEmpty()) {

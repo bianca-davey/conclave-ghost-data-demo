@@ -31,8 +31,7 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 
-<!-- TODO: Input Row and CSV drag. -->
-
+<?import javafx.scene.control.Label?>
 <Scene stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <StackPane fx:id="topStack" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="924.0" prefWidth="1383.0">
         <BorderPane styleClass="parent">
@@ -49,7 +48,7 @@
                     </HBox>
                     <!-- Entity selection menu. -->
                     <AnchorPane>
-                        <!-- TODO: set uniform colouring to accordion entity title. -->
+                        <!-- TODO: styling- set uniform colouring to accordion entity title. -->
                         <Accordion layoutX="10.0" layoutY="10.0" prefHeight="140.0" prefWidth="200.0" styleClass="entity-menu">
                             <panes>
                                 <TitledPane animated="false" prefHeight="200.0" prefWidth="200.0" text="ENTITIES" styleClass="entity-menu-button">
@@ -101,17 +100,6 @@
                             <!-- Title of Entity currently viewing. -->
                             <HBox alignment="CENTER_LEFT" prefWidth="50.0" styleClass="title-pane" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                 <Text styleClass="entity-title" text="Person" />
-                                <!-- TODO: work in progress- input fields in TableView row. -->
-                                <!-- New Trade Button. -->
-                                <!-- <Button alignment="CENTER" graphicTextGap="5.0" mnemonicParsing="false" onAction="#newTrade" styleClass="generic-button" text="New Trade">
-                                    <padding>
-                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                    </padding>
-                                </Button>
-                                -->
-                                <opaqueInsets>
-                                    <Insets />
-                                </opaqueInsets>
                                 <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                 </padding>
@@ -163,7 +151,7 @@
                             </padding>
                             <children>
 
-                                <!-- TODO: work in progress- Input Row for Entity Table-->
+                                <!-- TODO: Input fields in entity TableView row. Incomplete work in progress, on pause. -->
                                 <!--
                                 <VBox prefHeight="20.0" prefWidth="100.0" styleClass="panel" VBox.vgrow="ALWAYS" >
                                     <GridPane styleClass="panel" VBox.vgrow="ALWAYS" >
@@ -186,10 +174,9 @@
                                 </VBox>
                                 -->
 
-                                <!-- TODO Sep 2: Input row and CSV drag & drop. -->
-                                <!-- Note- work in progress; rough notes/tests. -->
-                                <!-- Input Row for Entity Table-->
-
+                                <!-- TODO: Input fields. -->
+                                <!-- TODO: CSV drag & drop. Work in progress, not yet complete. -->
+                                <!-- Input Fields for Entity Table. -->
                                 <VBox prefWidth="100.0" styleClass="panel" >
                                     <GridPane styleClass="panel" minHeight="50.0" maxHeight="50.0" >
                                         <children>
@@ -198,15 +185,18 @@
                                             <TextField fx:id="dOBField" promptText="Enter DOB DD/MM/YYYY" GridPane.columnIndex="2" minHeight="50.0" maxHeight="50.0"/>
                                             <TextField fx:id="addressField" promptText="Enter address" GridPane.columnIndex="3" minHeight="50.0" maxHeight="50.0"/>
                                             <TextField fx:id="passportField" promptText="Enter passport" GridPane.columnIndex="4" minHeight="50.0" maxHeight="50.0"/>
-                                            <!--<Button fx:id="addButton" mnemonicParsing="false" text="+" onAction="#ok" styleClass="generic-button" GridPane.columnIndex="5"/>-->
-                                            <Button fx:id="addButton" graphicTextGap="15.0" mnemonicParsing="false" GridPane.columnIndex="5" prefWidth="50.0" styleClass="generic-button" onAction="#ok">
+                                            <!-- Button to create new entity from input fields. -->
+                                            <Button fx:id="addButton" graphicTextGap="15.0" mnemonicParsing="false" GridPane.columnIndex="5" prefWidth="50.0" styleClass="generic-button"> <!-- onAction="#ok"-->
                                                 <graphic>
                                                     <FontIcon iconColor="WHITE" iconLiteral="fa-plus" iconSize="25" />
                                                 </graphic>
                                             </Button>
-                                            <HBox minHeight="50.0" maxHeight="50.0" minWidth="50.0" maxWidth="50.0" GridPane.columnIndex="6" styleClass="drop-box">
-                                                <FontIcon iconColor="WHITE" iconLiteral="fa-file" iconSize="25" />
+                                            <!-- Drag & drop area for CSV files. -->
+                                            <HBox fx:id="dropBox" alignment="CENTER" minHeight="50.0" maxHeight="50.0" minWidth="50.0" maxWidth="50.0" GridPane.columnIndex="7" styleClass="drop-box">
+                                                <FontIcon iconColor="WHITE" iconLiteral="fa-file" iconSize="25" styleClass="file-icon" />
                                             </HBox>
+
+                                            <!-- Note- previous code, delete when new code complete. -->
                                             <!--
                                             <TextField fx:id="instrumentField" promptText="Enter instrument" prefHeight="20.0" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                                             <TextField fx:id="priceField" promptText="Enter price" prefHeight="20.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
@@ -227,9 +217,8 @@
                                     </GridPane>
                                 </VBox>
 
-
-                                <!-- TODO: Dynamic columns based on Entity chosen from Accordion menu. -->
-                                <!-- TODO: work in progress, unfinished code. TableColumns based on Person entity. -->
+                                <!-- TODO: Entity Table for Person. Configure input into table. -->
+                                <!-- Note- future work: dynamic TableView for multiple Entity, based on selection from Entity accordion menu. -->
                                 <VBox prefHeight="50.0" prefWidth="100.0" spacing="20.0" styleClass="panel" VBox.vgrow="ALWAYS">
                                     <children>
                                         <TableView fx:id="ordersTable" editable="true" maxHeight="1.7976931348623157E308" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -293,8 +282,7 @@
                                     </padding>
                                 </VBox>
 
-                                <!-- Orders Table -->
-
+                                <!-- Original Orders Table code. Delete when new Entity Table code complete. -->
                                 <!--
                                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" styleClass="panel" VBox.vgrow="ALWAYS">
                                     <children>
