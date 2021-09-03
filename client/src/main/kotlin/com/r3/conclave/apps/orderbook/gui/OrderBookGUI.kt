@@ -39,7 +39,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
-private var nextOrderId = 0
+//private var nextOrderId = 0
+internal var nextOrderId = 0
 // TODO: delete if not using.
 private var nextPersonId = 0
 
@@ -81,11 +82,9 @@ open class Controller<RESULT>(fxmlPath: String, private val title: String) {
     }
 }
 
-// TODO: testing new controller. but can only be declared at root in fxml, so...
+// TODO: new entity controller, incomplete. Delete if don't use.
 /*
 class NewEntityController(private val userName: String) : Controller<Person>("/main.fxml", "New Entity") {
-
-    // TODO: tablecells.
     /*
     lateinit var firstNameField: TextFieldTableCell<String, String>
     lateinit var lastNameField: TextFieldTableCell<String, String>
@@ -93,7 +92,6 @@ class NewEntityController(private val userName: String) : Controller<Person>("/m
     lateinit var addressField: TextFieldTableCell<String, String>
     lateinit var passportField: TextFieldTableCell<String, String>
      */
-
     lateinit var firstNameField: TextField
     lateinit var lastNameField: TextField
     lateinit var dOBField: TextField
@@ -112,67 +110,8 @@ class NewEntityController(private val userName: String) : Controller<Person>("/m
         // writeableResult.set(Order(nextOrderId++, userName, buySell, instrumentField.text, price, quantity))
         writeableResult.set(Person(nextPersonId++, userName, firstNameField.text, lastNameField.text, dOBField.text, addressField.text))
     }
-    //writeableResult.set(Order(nextOrderId++, userName, buySell, instrumentField.text, price, quantity)
 }
  */
-
-// New Order Controller.
-class NewOrderController(private val userName: String) : Controller<Order>("/new-order.fxml", "New Order") { // Controller<Order.(/new-order.fxml", "New Order"
-    lateinit var buyButton: ToggleButton
-    lateinit var sellButton: ToggleButton
-
-    init {
-        // We're abusing buttons as if they were radio buttons, but JavaFX allows a button to
-        // be unselected if just using a regular toggle button. So we have to enforce radio-like
-        // behaviour here.
-        buyButton.setOnAction { if (!buyButton.isSelected) buyButton.isSelected = true }
-        sellButton.setOnAction { if (!sellButton.isSelected) sellButton.isSelected = true }
-    }
-
-    lateinit var instrumentField: TextField
-    lateinit var priceField: TextField
-    private val locale = Locale.US
-    private val priceFieldFormatter = TextFormatter(CurrencyStringConverter(locale), 0.0)
-    lateinit var quantityField: TextField
-
-    init {
-        priceField.textFormatter = priceFieldFormatter
-        priceField.setOnKeyTyped {
-            if (!priceField.text.startsWith("$")) {
-                val pos = priceField.caretPosition
-                priceField.text = "$" + priceField.text
-                priceField.positionCaret(pos + 1)
-            }
-        }
-
-        redUnderlineIfBlank(instrumentField)
-        redUnderlineIfBlank(quantityField)
-    }
-
-    private fun redUnderlineIfBlank(textField: TextField) {
-        textField.styleClass += "text-field-invalid"
-        textField.setOnKeyTyped {
-            if (textField.text.isBlank()) {
-                textField.styleClass += "text-field-invalid"
-            } else {
-                textField.styleClass -= "text-field-invalid"
-            }
-        }
-    }
-
-    private val price get() = (priceFieldFormatter.value.toDouble() * 100).toLong()
-
-    fun ok() {
-        val buySell = when {
-            buyButton.isSelected -> BuySell.BUY
-            sellButton.isSelected -> BuySell.SELL
-            else -> unreachable()
-        }
-        val quantity = NumberFormat.getIntegerInstance().parse(quantityField.text).toLong()
-        writeableResult.set(Order(nextOrderId++, userName, buySell, instrumentField.text, price, quantity))
-        close()
-    }
-}
 
 @Suppress("UNCHECKED_CAST")
 class MainUIController(userName: String, private val client: OrderBookClient) : Controller<Unit>("/main.fxml", "Order Book Demo") {

@@ -71,14 +71,12 @@
          </VBox>
          <ButtonBar GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
             <buttons>
-               <Button cancelButton="true" mnemonicParsing="false" styleClass="generic-button" onAction="#close">
-                       text="CANCEL">
+               <Button cancelButton="true" text="CANCEL" mnemonicParsing="false" styleClass="generic-button" onAction="#close">
                   <padding>
                      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
                   </padding>
                </Button>
-               <Button defaultButton="true" mnemonicParsing="false" styleClass="generic-button" onAction="#ok">
-                       text="PLACE ORDER">
+               <Button defaultButton="true" text="PLACE ORDER" mnemonicParsing="false" styleClass="generic-button" onAction="#ok">
                   <padding>
                      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
                   </padding>

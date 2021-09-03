@@ -186,7 +186,8 @@
                                             <TextField fx:id="addressField" promptText="Enter address" GridPane.columnIndex="3" minHeight="50.0" maxHeight="50.0"/>
                                             <TextField fx:id="passportField" promptText="Enter passport" GridPane.columnIndex="4" minHeight="50.0" maxHeight="50.0"/>
                                             <!-- Button to create new entity from input fields. -->
-                                            <Button fx:id="addButton" graphicTextGap="15.0" mnemonicParsing="false" GridPane.columnIndex="5" prefWidth="50.0" styleClass="generic-button"> <!-- onAction="#ok"-->
+                                            <!-- Note: onAction is currently set to #newTrade for testing purposes only, while code is in progress.-->
+                                            <Button fx:id="addButton" graphicTextGap="15.0" mnemonicParsing="false" GridPane.columnIndex="5" prefWidth="50.0" styleClass="generic-button" onAction="#newTrade" > <!-- onAction="#ok"-->
                                                 <graphic>
                                                     <FontIcon iconColor="WHITE" iconLiteral="fa-plus" iconSize="25" />
                                                 </graphic>
