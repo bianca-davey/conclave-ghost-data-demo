@@ -39,7 +39,6 @@ import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
-//private var nextOrderId = 0
 internal var nextOrderId = 0
 // TODO: delete if not using.
 private var nextPersonId = 0
@@ -116,26 +115,23 @@ class NewEntityController(private val userName: String) : Controller<Person>("/m
 @Suppress("UNCHECKED_CAST")
 class MainUIController(userName: String, private val client: OrderBookClient) : Controller<Unit>("/main.fxml", "Order Book Demo") {
 
-    // Item class
     class Item<T : OrderOrTrade>(val date: Instant, val contained: T)
-    // TODO doing an entityInstance class:
-    // TODO 1/9: problem here?
-    //class PersonInstance<T: EntityType>(val date: Instant, val contained: T)
-    class PersonInstance<T: EntityType>()
 
     lateinit var ordersTable: TableView<Item<Order>>
     lateinit var matchesTable: TableView<Item<Trade>>
-    // TODO: personTable with input row.
-    //lateinit var personTable: TableView<Person>
     lateinit var userButton: MenuButton
     lateinit var photoView: ImageView
 
     private val orders = FXCollections.observableArrayList<Item<Order>>()
     private val trades = FXCollections.observableArrayList<Item<Trade>>()
-    // TODO: personTable populated with.
+
+    // TODO: for entity table with input fields in table row. Incomplete- paused.
+    //class PersonInstance<T: EntityType>(val date: Instant, val contained: T)
+    class PersonInstance<T: EntityType>()
+    //lateinit var personTable: TableView<Person>
     private val personEntities = FXCollections.observableArrayList<Person>()
 
-    // TODO Sep 3: drag & drop for CSV file.
+    // TODO drag & drop for CSV file.
     lateinit var dropBox: HBox;
     /*
     dropBox.setOnDragOver(EventHandler<DragEvent>){
@@ -147,7 +143,7 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
             }
         }
     }
-     */
+    */
 
     init {
         userButton.text = userName.capitalize()
@@ -166,12 +162,12 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
 
         configureOrdersTable()
         configureMatchesTables()
-        // TODO: configure person table.
+        // TODO: entity table for person.
         //configurePersonTable()
         listenForMatches()
     }
 
-    // TODO Sep 3: CSV drop box.
+    // TODO: CSV drop box.
     private fun csvDropBox() {
         dropBox.onDragOver = EventHandler<DragEvent>(){
             fun handle(event: DragEvent){
@@ -205,15 +201,14 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
     }
      */
 
-    // Configures tableviews.
     private fun <T : OrderOrTrade> setColFromString(column: TableColumn<Item<T>, *>?, body: (Item<T>) -> String) {
         (column as TableColumn<Item<T>, String>).setCellValueFactory {
             Bindings.createStringBinding({ body(it.value) })
         }
     }
 
-    // TODO: need to configure person-entity tableview.
-    // TODO: changed Item (class above) to PersonInstance (class above). OrderorTrade equivalent is EntityType. (common > types.kt).
+    // TODO: person-entity table, note- incomplete.
+    // <PersonInstance>-<Item>, <EntityType>-<OrderOrTrade>
     private fun <T: EntityType> setColumn(column: TableColumn<PersonInstance<T>, *>?, body: (PersonInstance<T>) -> String) {
         (column as TableColumn<PersonInstance<T>, String>).setCellValueFactory {
             Bindings.createStringBinding({body(it.value)})
@@ -223,7 +218,8 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
     private val formatter = NumberFormat.getCurrencyInstance(Locale.US)
     private fun Long.toPriceString(): String = formatter.format(toDouble() / 100.0)
 
-    // TODO: configure Person table. Can't get it to recognise configurecolumns.
+    // TODO: configure entity-person table. note- incomplete.
+    // Doesn't recognise configureColumns.
     private fun configurePersonTable(){
         //personTable.columns.centreColumns()
         //setColumn(personTable.columns[0]) {it.contained.personId.toString}
@@ -234,7 +230,6 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
     Unit defined in com.r3.conclave.apps.orderbook.gui.MainUIController
 
     private final fun <T : EntityType> List<TableColumn<MainUIController.PersonInstance<T>, *>>.centreColumns(): Unit
-
          */
 
     }
@@ -249,7 +244,6 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         setColFromString(ordersTable.columns[5]) { it.contained.quantity.toString() }
     }
 
-    // note: this was above configorderstable before.
     private fun configureMatchesTables() {
         matchesTable.columns.centerTableColumns()
         setColFromString(matchesTable.columns[0].columns[0]) { it.contained.orderId.toString() }
@@ -262,8 +256,7 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         setColFromString(matchesTable.columns[6]) { it.contained.matchingOrder.quantity.toString() }
     }
 
-
-    // TODO: function for person tableview
+    // TODO: for entity-person tableview, incomplete.
     private fun <T : EntityType> List<TableColumn<PersonInstance<T>, *>>.centreColumns() {
         for (column in this) {
             if (column.columns.isNotEmpty()) {
@@ -283,7 +276,6 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         }
     }
 
-    // TODO: function for person tableview is above.
     private fun <T : OrderOrTrade> List<TableColumn<Item<T>, *>>.centerTableColumns() {
         for (column in this) {
             if (column.columns.isNotEmpty()) {
@@ -364,59 +356,6 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
                     e.printStackTrace()
                 }
             }
-        }
-    }
-}
-
-class LoginController : Controller<Unit>("/intro.fxml", "Login") {
-    lateinit var serviceAddress: TextField
-    lateinit var userName: TextField
-    lateinit var password: TextField
-    lateinit var connectButton: Button
-
-    // The UI shown during connect.
-    lateinit var progressLabel: Label
-    lateinit var verifyingImage: Parent
-    lateinit var communicatingImage: Parent
-    lateinit var signinImage: Parent
-
-    init {
-        // The UI has some dummy state to make visual editing easier, clear it now.
-        progressLabel.text = ""
-        verifyingImage.opacity = 0.0
-        communicatingImage.opacity = 0.0
-        signinImage.opacity = 0.0
-
-        userName.text = "alice"
-        password.text = "alice"
-        serviceAddress.text = "localhost:9999"
-    }
-
-    fun onConnect() {
-        connectButton.isDisable = true
-        progressLabel.text = "Verifying server behaviour ..."
-        verifyingImage.opacity = 1.0
-        val task = ConnectTask(serviceAddress.text, userName.text, password.text)
-        task.progressEnumProperty.addListener { _, _, new ->
-            when (new) {
-                ConclaveGRPCClient.Progress.COMPLETING -> {
-                    // Setting up the mail stream.
-                    communicatingImage.opacity = 1.0
-                    progressLabel.text = "Encrypting communication ..."
-                }
-                ConclaveGRPCClient.Progress.COMPLETE -> {
-                    // Connection may be complete, but not the signing in part ...
-                    progressLabel.text = "Signing in ..."
-                    signinImage.opacity = 1.0
-                }
-            }
-        }
-        Thread(task, "Connect Thread").also { it.isDaemon = true }.start()
-        task.setOnSucceeded {
-            OrderBookGUI.primaryStage.scene = MainUIController(userName.text, client = task.value).scene
-        }
-        task.setOnFailed {
-            throw task.exception
         }
     }
 }
