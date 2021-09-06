@@ -2,32 +2,27 @@ package com.r3.conclave.apps.orderbook.gui
 
 import com.r3.conclave.apps.orderbook.OrderBookClient
 import com.r3.conclave.apps.orderbook.types.*
-import com.r3.conclave.common.EnclaveInstanceInfo
-import com.r3.conclave.common.EnclaveSecurityInfo
 import com.r3.conclave.grpc.ConclaveGRPCClient
-import com.sandec.mdfx.MDFXNode
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.collections.FXCollections
+import javafx.collections.ObservableList
 import javafx.concurrent.Task
 import javafx.event.EventHandler
 import javafx.fxml.FXMLLoader
-import javafx.geometry.Insets
-import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.DragEvent
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.TransferMode
 import javafx.scene.layout.HBox
 import javafx.scene.shape.Circle
 import javafx.scene.text.Font
 import javafx.stage.Stage
-import javafx.util.converter.CurrencyStringConverter
 import kotlinx.serialization.ExperimentalSerializationApi
 import java.text.NumberFormat
 import java.time.Instant
@@ -38,6 +33,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
+
 
 internal var nextOrderId = 0
 // TODO: delete if not using.
@@ -81,37 +77,6 @@ open class Controller<RESULT>(fxmlPath: String, private val title: String) {
     }
 }
 
-// TODO: new entity controller, incomplete. Delete if don't use.
-/*
-class NewEntityController(private val userName: String) : Controller<Person>("/main.fxml", "New Entity") {
-    /*
-    lateinit var firstNameField: TextFieldTableCell<String, String>
-    lateinit var lastNameField: TextFieldTableCell<String, String>
-    lateinit var dOBField: TextFieldTableCell<String, String>
-    lateinit var addressField: TextFieldTableCell<String, String>
-    lateinit var passportField: TextFieldTableCell<String, String>
-     */
-    lateinit var firstNameField: TextField
-    lateinit var lastNameField: TextField
-    lateinit var dOBField: TextField
-    lateinit var addressField: TextField
-    lateinit var passportField: TextField
-
-    fun addEntity() {
-        /*
-        val buySell = when {
-            buyButton.isSelected -> BuySell.BUY
-            sellButton.isSelected -> BuySell.SELL
-            else -> unreachable()
-        }
-        val quantity = NumberFormat.getIntegerInstance().parse(quantityField.text).toLong()
-         */
-        // writeableResult.set(Order(nextOrderId++, userName, buySell, instrumentField.text, price, quantity))
-        writeableResult.set(Person(nextPersonId++, userName, firstNameField.text, lastNameField.text, dOBField.text, addressField.text))
-    }
-}
- */
-
 @Suppress("UNCHECKED_CAST")
 class MainUIController(userName: String, private val client: OrderBookClient) : Controller<Unit>("/main.fxml", "Order Book Demo") {
 
@@ -125,25 +90,31 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
     private val orders = FXCollections.observableArrayList<Item<Order>>()
     private val trades = FXCollections.observableArrayList<Item<Trade>>()
 
+    lateinit var personEntityButton: Button
+    lateinit var invoiceEntityButton: Button
+    lateinit var claimEntityButton: Button
+
     // TODO: for entity table with input fields in table row. Incomplete- paused.
     //class PersonInstance<T: EntityType>(val date: Instant, val contained: T)
     class PersonInstance<T: EntityType>()
-    //lateinit var personTable: TableView<Person>
     private val personEntities = FXCollections.observableArrayList<Person>()
+    private val personEntityExamples = FXCollections.observableArrayList<Person>(
+        Person(nextPersonId, "Jane", "Doe", "06.03.1996", "123 Fake Street", "456781234"),
+        Person(nextPersonId, "John", "Doe", "12.12.1989", "321 Fake Street", "123456789"),
+    )
+    lateinit var entityTable: TableView<Person>
 
-    // TODO drag & drop for CSV file.
-    lateinit var dropBox: HBox;
-    /*
-    dropBox.setOnDragOver(EventHandler<DragEvent>){
-        @Override
-        fun handle(DragEvent event){
-            Dragboard dragBoard = event.getDragBoard();
-            if(dragBoard.hasFiles()){
-                event.acceptTransferModes(TransferMode.COPY)
-            }
-        }
+    // TODO: input fields.
+    lateinit var firstNameField: TextField
+    lateinit var lastNameField: TextField
+    lateinit var dOBField: TextField
+    lateinit var addressField: TextField
+    lateinit var passportField: TextField
+
+    // TODO: person input fields.
+    fun add() {
+        writeableResult.set(Person(nextPersonId++, firstNameField.text, lastNameField.text, dOBField.text, addressField.text, passportField.text))
     }
-    */
 
     init {
         userButton.text = userName.capitalize()
@@ -164,8 +135,23 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         configureMatchesTables()
         // TODO: entity table for person.
         //configurePersonTable()
+        configureEntityTable()
         listenForMatches()
     }
+
+    // TODO drag & drop for CSV file.
+    lateinit var dropBox: HBox;
+    /*
+    dropBox.setOnDragOver(EventHandler<DragEvent>){
+        @Override
+        fun handle(DragEvent event){
+            Dragboard dragBoard = event.getDragBoard();
+            if(dragBoard.hasFiles()){
+                event.acceptTransferModes(TransferMode.COPY)
+            }
+        }
+    }
+    */
 
     // TODO: CSV drop box.
     private fun csvDropBox() {
@@ -179,15 +165,20 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         }
         dropBox.onDragDropped = EventHandler<DragEvent>(){
             fun handle(event: DragEvent){
-                if (event.dragboard.hasFiles()){
-                    // Label example- label1.setText(db.getFiles().toString())
-                    print("Event successful.")
+                var fileText: String
+                val db = event.dragboard
+                if (db.hasFiles()){
+                    fileText = db.files.toString()
+                    //fileText.setText(db.getFiles().toString())
+                    println("Received file.")
+                    println("Contents: ")
+                    print(fileText)
                 }
                 event.consume()
             }
         }
-
     }
+
     /*
         private fun csvDropBox() {
         dropBox.setOnDragOver(EventHandler<DragEvent>(){
@@ -218,6 +209,12 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
     private val formatter = NumberFormat.getCurrencyInstance(Locale.US)
     private fun Long.toPriceString(): String = formatter.format(toDouble() / 100.0)
 
+    // TODO: person entity table.
+    private fun configureEntityTable(){
+        entityTable.items(personEntityExamples)
+        entityTable.columns.addAll()
+    }
+
     // TODO: configure entity-person table. note- incomplete.
     // Doesn't recognise configureColumns.
     private fun configurePersonTable(){
@@ -228,10 +225,8 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         None of the following candidates is applicable because of receiver type mismatch:
     private final fun <T : EntityType> List<TableColumn<MainUIController.PersonInstance<TypeVariable(T)>, *>>.centreColumns():
     Unit defined in com.r3.conclave.apps.orderbook.gui.MainUIController
-
     private final fun <T : EntityType> List<TableColumn<MainUIController.PersonInstance<T>, *>>.centreColumns(): Unit
          */
-
     }
 
     private fun configureOrdersTable() {
@@ -317,6 +312,24 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
         }
     }
 
+    fun entitySelected(){
+
+    }
+
+    // Functions for implementing action upon entity type selection.
+    fun personEntitySelected(){
+        println("Person entity selected.")
+        // Implement function to display and configure person entity interface.
+    }
+    fun invoiceEntitySelected(){
+        println("Invoice entity selected.")
+        // Implement function to display and configure person entity interface.
+    }
+    fun claimEntitySelected(){
+        println("Claim entity selected.")
+        // Implement function to display and configure person entity interface.
+    }
+
     fun showAuditResults() {
         AuditController(client.enclaveInstanceInfo).showAndWait()
     }
@@ -358,6 +371,14 @@ class MainUIController(userName: String, private val client: OrderBookClient) : 
             }
         }
     }
+}
+
+// TODO: person table view.
+private fun <S> TableView<S>.items(personEntityExamples: ObservableList<S>) {
+}
+
+// TODO person input field, from writeableResult.
+private fun <T> ReadOnlyObjectWrapper<T>.set(person: Person) {
 }
 
 class OrderBookGUI : Application() {

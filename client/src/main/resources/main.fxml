@@ -46,7 +46,8 @@
                         </padding>
                         <ImageView fitWidth="100.0" preserveRatio="true"><Image url="@R3_WHT_RedDot.png" /></ImageView>
                     </HBox>
-                    <!-- Entity selection menu. -->
+                    <!-- Entity menu with entity selection buttons. -->
+                    <!-- Future work: dynamic interface configuring TableViews, title and input fields on entity selected. -->
                     <AnchorPane>
                         <!-- TODO: styling- set uniform colouring to accordion entity title. -->
                         <Accordion layoutX="10.0" layoutY="10.0" prefHeight="140.0" prefWidth="200.0" styleClass="entity-menu">
@@ -55,17 +56,17 @@
                                     <content>
                                         <Pane prefWidth="200.0" styleClass="entity-menu-button">
                                             <children>
-                                                <Button layoutY="1.0" prefWidth="200.0" text="Person" textAlignment="CENTER" styleClass="entity-menu-button">
+                                                <Button fx:id="personEntityButton" layoutY="1.0" prefWidth="200.0" text="Person" textAlignment="CENTER" styleClass="entity-menu-button" onAction="#personEntitySelected" >
                                                     <padding>
                                                         <Insets bottom="5.0" top="5.0" />
                                                     </padding>
                                                 </Button>
-                                                <Button layoutY="36.0" prefWidth="200.0" text="Invoice" textAlignment="CENTER" styleClass="entity-menu-button">
+                                                <Button fx:id="invoiceEntityButton" layoutY="36.0" prefWidth="200.0" text="Invoice" textAlignment="CENTER" styleClass="entity-menu-button" onAction="#invoiceEntitySelected">
                                                     <padding>
                                                         <Insets bottom="5.0" top="5.0" />
                                                     </padding>
                                                 </Button>
-                                                <Button layoutY="71.0" prefWidth="200.0" text="Claim" textAlignment="CENTER" styleClass="entity-menu-button">
+                                                <Button fx:id="claimEntityButton" layoutY="71.0" prefWidth="200.0" text="Claim" textAlignment="CENTER" styleClass="entity-menu-button" onAction="#claimEntitySelected">
                                                     <padding>
                                                         <Insets bottom="5.0" top="5.0" />
                                                     </padding>
@@ -187,7 +188,7 @@
                                             <TextField fx:id="passportField" promptText="Enter passport" GridPane.columnIndex="4" minHeight="50.0" maxHeight="50.0"/>
                                             <!-- Button to create new entity from input fields. -->
                                             <!-- Note: onAction is currently set to #newTrade for testing purposes only, while code is in progress.-->
-                                            <Button fx:id="addButton" graphicTextGap="15.0" mnemonicParsing="false" GridPane.columnIndex="5" prefWidth="50.0" styleClass="generic-button" onAction="#newTrade" > <!-- onAction="#ok"-->
+                                            <Button fx:id="addEntityButton" graphicTextGap="15.0" mnemonicParsing="false" GridPane.columnIndex="5" prefWidth="50.0" styleClass="generic-button" onAction="#newTrade" > <!-- onAction="#ok"-->
                                                 <graphic>
                                                     <FontIcon iconColor="WHITE" iconLiteral="fa-plus" iconSize="25" />
                                                 </graphic>
@@ -218,8 +219,33 @@
                                     </GridPane>
                                 </VBox>
 
-                                <!-- TODO: Entity Table for Person. Configure input into table. -->
+                                <!-- TODO: Entity table. -->
+                                <VBox prefHeight="50.0" prefWidth="100.0" spacing="20.0" styleClass="panel" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <TableView fx:id="entityTable" editable="true" maxHeight="1.7976931348623157E308" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn text="ALERT" prefWidth="100.0" fx:id="alertField" />
+                                                <TableColumn text="ID" prefWidth="100.0" />
+                                                <TableColumn text="FIRST NAME" />
+                                                <TableColumn text="LAST NAME" />
+                                                <TableColumn text="DOB" />
+                                                <TableColumn text="ADDRESS" />
+                                                <TableColumn text="PASSPORT" />
+                                            </columns>
+                                            <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                            </columnResizePolicy>
+                                        </TableView>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </padding>
+                                </VBox>
+
+                                <!-- TODO: future- Entity Table for Person with input rows. Configure input into table. -->
                                 <!-- Note- future work: dynamic TableView for multiple Entity, based on selection from Entity accordion menu. -->
+
+
                                 <VBox prefHeight="50.0" prefWidth="100.0" spacing="20.0" styleClass="panel" VBox.vgrow="ALWAYS">
                                     <children>
                                         <TableView fx:id="ordersTable" editable="true" maxHeight="1.7976931348623157E308" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -282,6 +308,7 @@
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                     </padding>
                                 </VBox>
+
 
                                 <!-- Original Orders Table code. Delete when new Entity Table code complete. -->
                                 <!--
